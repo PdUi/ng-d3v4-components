@@ -1,6 +1,6 @@
-// https://bl.ocks.org/mbostock/444757cc9f0fde320a5f469cd36860f4
 import { Component } from '@angular/core';
 
+import { BaseType, ScaleOrdinal, Selection } from 'd3';
 import { drag, event, range, scaleOrdinal, schemeCategory20, select } from 'd3';
 
 @Component({
@@ -9,85 +9,86 @@ import { drag, event, range, scaleOrdinal, schemeCategory20, select } from 'd3';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor() {
-    const canvas = select('canvas'),
-    context = (<any> canvas.node()).getContext('2d'),
-    width = canvas.property('width'),
-    height = canvas.property('height'),
-    radius = 32;
+  private circles: { index: number, x: number, y: number }[];
+  private context: CanvasRenderingContext2D;
+  private height: number;
+  private width: number;
+  private radius = 32;
+  private color: ScaleOrdinal<string, string>;
 
-    const circles = range(20).map((i) => {
+  constructor() {
+    const canvas: Selection<HTMLCanvasElement, {}, HTMLElement, any> = select<HTMLCanvasElement, {}>('canvas');
+    this.width = +canvas.property('width');
+    this.height = +canvas.property('height');
+    this.context = canvas.node().getContext('2d');
+
+    this.circles = range(20).map((i) => {
       return {
         index: i,
-        x: Math.round(Math.random() * (width - radius * 2) + radius),
-        y: Math.round(Math.random() * (height - radius * 2) + radius)
+        x: Math.round(Math.random() * (this.width - this.radius * 2) + this.radius),
+        y: Math.round(Math.random() * (this.height - this.radius * 2) + this.radius)
       };
     });
 
-    const color = scaleOrdinal()
-        .range(schemeCategory20);
+    this.color = scaleOrdinal<string, string>().range(schemeCategory20);
 
-    render();
+    this.render();
 
     canvas.call(drag()
-        .subject(dragsubject)
-        .on('start', dragstarted)
-        .on('drag', dragged)
-        .on('end', dragended)
-        .on('start.render drag.render end.render', render));
+        .subject(this.dragsubject.bind(this))
+        .on('start', this.dragstarted.bind(this))
+        .on('drag', this.dragged.bind(this))
+        .on('end', this.dragended.bind(this))
+        .on('start.render drag.render end.render', this.render.bind(this)));
+  }
 
-    function render() {
-      context.clearRect(0, 0, width, height);
-      for (let i = 0, n = circles.length, circle; i < n; ++i) {
-        circle = circles[i];
-        context.beginPath();
-        context.moveTo(circle.x + radius, circle.y);
-        context.arc(circle.x, circle.y, radius, 0, 2 * Math.PI);
-        context.fillStyle = color(circle.index);
-        context.fill();
-        if (circle.active) {
-          context.lineWidth = 2;
-          context.stroke();
-        }
+  dragended() {
+    event.subject.active = false;
+  }
+
+  dragstarted() {
+    this.circles.splice(this.circles.indexOf(event.subject), 1);
+    this.circles.push(event.subject);
+    event.subject.active = true;
+  }
+
+  dragged() {
+    event.subject.x = event.x;
+    event.subject.y = event.y;
+  }
+
+  dragsubject() {
+    let s2 = this.radius * this.radius * 4; // Double the radius.
+    let subject;
+    const n = this.circles.length;
+
+    for (let i = 0; i < n; ++i) {
+      const circle = this.circles[i];
+      const dx = event.x - circle.x;
+      const dy = event.y - circle.y;
+      const d2 = dx * dx + dy * dy;
+      if (d2 < s2) {
+        subject = circle;
+        s2 = d2;
       }
     }
 
-    function dragsubject() {
-      let i = 0,
-          dx,
-          dy,
-          d2,
-          circle,
-          s2 = radius * radius * 4, // Double the radius.
-          subject;
-      const n = circles.length;
+    return subject;
+  }
 
-      for (i = 0; i < n; ++i) {
-        circle = circles[i];
-        dx = event.x - circle.x;
-        dy = event.y - circle.y;
-        d2 = dx * dx + dy * dy;
-        if (d2 < s2) {
-          subject = circle, s2 = d2;
-        }
+  render() {
+    this.context.clearRect(0, 0, this.width, this.height);
+    for (let i = 0, n = this.circles.length, circle; i < n; ++i) {
+      circle = this.circles[i];
+      this.context.beginPath();
+      this.context.moveTo(circle.x + this.radius, circle.y);
+      this.context.arc(circle.x, circle.y, this.radius, 0, 2 * Math.PI);
+      this.context.fillStyle = this.color(circle.index);
+      this.context.fill();
+      if (circle.active) {
+        this.context.lineWidth = 2;
+        this.context.stroke();
       }
-
-      return subject;
-    }
-
-    function dragstarted() {
-      circles.splice(circles.indexOf(event.subject), 1);
-      circles.push(event.subject);
-      event.subject.active = true;
-    }
-
-    function dragged() {
-      event.subject.x = event.x;
-      event.subject.y = event.y;
-    }
-
-    function dragended() {
-      event.subject.active = false;
     }
   }
 }
