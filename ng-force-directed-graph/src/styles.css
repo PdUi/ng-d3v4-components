@@ -1,18 +1,24 @@
-html, body, .bubble-chart {
+html, body, .graph {
   height: 100%;
   width: 100%;
 }
 
-.bubble-chart {
+.graph {
   display: block;
 }
 
-.bubble-chart > svg {
+.graph > svg {
   height: 100%;
   width: 100%;
 }
 
-.bubble-chart > svg > .links > line {
+.graph > svg > .links > line {
   stroke: #777;
   stroke-width: 1px;
+}
+
+.half-width {
+  display: inline-block;
+  width: 49%;
+  height: 100%;
 }

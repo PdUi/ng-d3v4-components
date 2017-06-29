@@ -1,1 +1,6 @@
-<bubble-chart class="bubble-chart" [data]="bubbleChartData"></bubble-chart>
+<div class="half-width">
+  <force-directed-graph class="graph" [nodesData]="forceDirectedGraphNodes" [linksData]="forceDirectedGraphNodesLinks"></force-directed-graph>
+</div>
+<div class="half-width">
+  <bubble-graph class="graph" [bubblesData]="bubbles"></bubble-graph>
+</div>
