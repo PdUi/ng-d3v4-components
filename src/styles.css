@@ -1,0 +1,35 @@
+body,
+container,
+html,
+.fill-container {
+  height: 100%;
+  width: 100%;
+}
+
+.half-height {
+  height: 50%;
+}
+
+.half-width {
+  width: 50%;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+circle {
+  fill: blue;
+}
+
+.primary {
+  fill: red;
+}
+
+circle {
+  stroke-width: 3px;
+}
