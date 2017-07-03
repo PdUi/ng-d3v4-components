@@ -18,7 +18,7 @@ import { IWordCloudWord } from '../data-visualizations/index';
         [shouldPanAndZoom]="true"
         [circlesShouldDrag]="true"
         [linksData]="forceDirectedGraphNodesLinks"
-        [nodesData]="forceDirectedGraphNodes">
+        [data]="forceDirectedGraphNodes">
       </network-graph>
     </div>
   `
@@ -42,10 +42,10 @@ export class AppComponent {
 
     for (let i = 0, l = 99; i < l; i++) {
       const r = Math.random() * 100;
-      data.push({ word: i.toString(), relativeWeight: r });
+      data.push({ title: i.toString(), relativeWeight: r });
     }
 
-    data.push({ word: '56', relativeWeight: 53 });
+    data.push({ title: '56', relativeWeight: 53 });
 
     this.wordCloudData = data;
   }
