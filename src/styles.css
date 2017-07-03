@@ -26,10 +26,26 @@ circle {
   fill: blue;
 }
 
-.primary {
+circle.primary {
   fill: red;
 }
 
 circle {
   stroke-width: 3px;
+}
+
+svg text.small-font {
+  font-size: 10px;
+}
+
+svg text.meduim-font {
+  font-size: 14px;
+}
+
+svg text.large-font {
+  font-size: 20px;
+}
+
+.draggable {
+  cursor: pointer;
 }
