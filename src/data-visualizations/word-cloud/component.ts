@@ -9,12 +9,6 @@ import {
 import { DOCUMENT } from '@angular/platform-browser';
 
 import {
-  ScaleQuantize,
-  Selection,
-  Simulation
-} from 'd3';
-
-import {
   drag,
   event,
   forceCenter,
@@ -25,19 +19,22 @@ import {
   max,
   rgb,
   scaleQuantize,
+  ScaleQuantize,
   select,
+  Selection,
+  Simulation,
   zoom,
   zoomIdentity
 } from 'd3';
 
-import { IWordCloudWord } from './word-cloud-word.model';
+import { IWordCloudWord } from './word.model';
 
 @Component({
   selector: 'word-cloud',
   template: `<div class="fill-container" #wordcloudcontainer></div>`
 })
 export class WordCloudComponent implements AfterViewInit {
-  @Input() data: IWordCloudWord[];
+  @Input() data: IWordCloudWord[] = [];
   @Input() circlesShouldDrag: boolean;
   @Input() shouldPanAndZoom: boolean;
 
@@ -99,7 +96,7 @@ export class WordCloudComponent implements AfterViewInit {
           .data(this.data)
           .enter()
           .append<SVGTextElement>('text')
-            .text((d) => d.relativeWeight)
+            .text((d) => d.word)
             .attr('text-anchor', 'middle')
             .attr('class', (datum, index, groups) => this.circlesClassedFunction(datum))
             .classed('small-font', (datum, index, groups) => this.radiusScale(datum.relativeWeight) < 10)
@@ -124,11 +121,11 @@ export class WordCloudComponent implements AfterViewInit {
     }
 
     this.simulation = forceSimulation<IWordCloudWord, undefined>(this.data)
-      .alphaDecay(0.075)
-      .force('center', forceCenter<IWordCloudWord>(this.containerWidth / 2, this.containerHeight / 2))
-      .force('repulsion', forceManyBody<IWordCloudWord>().strength(2))
-      .force('collide', forceCollide<IWordCloudWord>((datum, index, groups) => this.radiusScale(datum.relativeWeight)))
-      .on('tick', this.tick.bind(this));
+                        .alphaDecay(0.075)
+                        .force('center', forceCenter<IWordCloudWord>(this.containerWidth / 2, this.containerHeight / 2))
+                        .force('repulsion', forceManyBody<IWordCloudWord>().strength(2))
+                        .force('collide', forceCollide<IWordCloudWord>((datum, index, groups) => this.radiusScale(datum.relativeWeight)))
+                        .on('tick', this.tick.bind(this));
   }
 
   tick() {
@@ -144,7 +141,7 @@ export class WordCloudComponent implements AfterViewInit {
 
     this.labels
           .attr('x', (d) => d.x)
-          .attr('y', (d) => d.y);
+          .attr('y', (d) => d.y + 5);
   }
 
   getRange(first: number, last: number) {

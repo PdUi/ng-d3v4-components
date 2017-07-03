@@ -3,11 +3,15 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 
-import { WordCloudComponent } from '../data-visualizations/index';
+import {
+  NetworkGraphComponent,
+  WordCloudComponent
+} from '../data-visualizations/index';
 
 @NgModule({
   declarations: [
     AppComponent,
+    NetworkGraphComponent,
     WordCloudComponent
   ],
   imports: [

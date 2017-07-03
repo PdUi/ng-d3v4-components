@@ -7,11 +7,12 @@ html,
 }
 
 .half-height {
-  height: 50%;
+  height: 49%;
 }
 
 .half-width {
-  width: 50%;
+  display: inline-block;
+  width: 49%;
 }
 
 .full-height {
@@ -48,4 +49,9 @@ svg text.large-font {
 
 .draggable {
   cursor: pointer;
+}
+
+svg line {
+  stroke: black;
+  stroke-width: 1px;
 }
