@@ -21,6 +21,10 @@ import { IWordCloudWord } from '../data-visualizations/index';
         [data]="forceDirectedGraphNodes">
       </network-graph>
     </div>
+    <div class="container half-width full-height">
+      <stacked-bar>
+      </stacked-bar>
+    </div>
   `
 })
 export class AppComponent {

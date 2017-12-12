@@ -8,11 +8,16 @@ import {
   WordCloudComponent
 } from '../data-visualizations/index';
 
+import {
+  StackedBarComponent
+} from './stacked-bar.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     NetworkGraphComponent,
-    WordCloudComponent
+    WordCloudComponent,
+    StackedBarComponent
   ],
   imports: [
     BrowserModule
