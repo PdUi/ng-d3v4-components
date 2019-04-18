@@ -15,8 +15,8 @@ export class ForceDirectedGraphComponent implements AfterViewInit {
   @Input() nodesData: INode[];
   @Input() linksData: INodesLink[] = [];
 
-  private link: Selection<SVGLineElement, INodesLink, HTMLElement, any>;
-  private nodes: Selection<SVGCircleElement, INode, HTMLElement, any>;
+  private link: Selection<SVGLineElement, INodesLink, SVGElement, any>;
+  private nodes: Selection<SVGCircleElement, INode, SVGElement, any>;
   private simulation: Simulation<INode, undefined>;
 
   constructor(private element: ElementRef) {
